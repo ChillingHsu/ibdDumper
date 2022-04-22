@@ -1,0 +1,24 @@
+* ibd Dumper
+
+Dumper for InnoDB [[https://dev.mysql.com/doc/refman/8.0/en/innodb-file-per-table-tablespaces.html][file-per-table]] tablespace file (i.e. some =.ibd= storing your table).
+
+⚠️TOY ALERT: NOT FOR PRODUCT USE⚠️
+
+** Try it
+
+#+begin_src sh
+  mvn -pl parser verify -Dexec.args=./samples/departments.ibd # or replace with your ibd file
+#+end_src
+
+** Structure
+
+- (maven) module =layout/= supplies a suite which enables you to describe a binary format by defining an abstract class and generate a subclass that does the parsing.
+
+- (maven) module =parser/= is basically a set of =layout= definition and a parsing context, which is responsible for formatting output and dereference some pointers like next file segments or next records etc.
+
+
+** Limitation
+
+This project is only made out of curiosity, don't surprise if you find it has some lame designs (feel free to tut). It can do SDI extract (if any) but cannot yet extract row user data from records, even it is totally viable.
+
+It can only parse several specific page format, namely =TYPE_FSP_HDR=, =INODE=, =TYPE_XDES=, =INDEX= and =SDI=.
